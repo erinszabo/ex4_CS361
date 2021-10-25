@@ -1,11 +1,14 @@
 # Exercise 5 Part 1 (Exception Handling)
 
 class MentalState
+  ## Hoping I understand correctly that we assume these methods
+  ## would work and we only need to do the exception handling in the non-class methods
   def auditable?
     # true if the external service is online, otherwise false
   end
   def audit!
-    # Could fail if external service is offline
+    # Could fail if external service is offline      
+    end
   end
   def do_work
     # Amazing stuff...
@@ -14,15 +17,16 @@ end
 
 def audit_sanity(bedtime_mental_state)
   return 0 unless bedtime_mental_state.auditable?
-  if bedtime_mental_state.audit!.ok?
+  begin
+    bedtime_mental_state.audit!.ok?
     MorningMentalState.new(:ok)
-  else 
+  rescue => exception
     MorningMentalState.new(:not_ok)
-  end
+
 end
 
 if audit_sanity(bedtime_mental_state) == 0
-  puts "error"
+  puts "error, sanity not found."
 else
   new_state = audit_sanity(bedtime_mental_state)
 end
