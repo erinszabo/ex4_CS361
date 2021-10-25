@@ -26,7 +26,7 @@ def audit_sanity(bedtime_mental_state)
 end
 
 if audit_sanity(bedtime_mental_state) == 0
-  puts "error, sanity not found."
+  puts "error: sanity not found."
 else
   new_state = audit_sanity(bedtime_mental_state)
 end
@@ -41,8 +41,23 @@ class BedtimeMentalState < MentalState ; end
 
 class MorningMentalState < MentalState ; end
 
+class NullMentalState < MentalState
+  def auditable?
+    # true if the external service is online, otherwise false
+    false
+  end
+  def audit!
+    # Could fail if external service is offline      
+    puts "error: NullMentalState" # only :not_ok
+  end
+  end
+  def do_work
+    puts "error: NullMentalState"
+  end
+end
+
 def audit_sanity(bedtime_mental_state)
-  return nil unless bedtime_mental_state.auditable?
+  return NullMentalState.new(:not_ok) unless bedtime_mental_state.auditable?
   if bedtime_mental_state.audit!.ok?
     MorningMentalState.new(:ok)
   else 
