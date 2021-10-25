@@ -75,11 +75,26 @@ new_state.do_work
 
 require 'candy_service'
 
-machine = CandyMachine.new
-machine.prepare
+class MyCandyMachine
 
-if machine.ready?
-  machine.make!
-else
-  puts "sadness"
+  def initialize
+    @CandyMachine = CandyMachine.new  
+  end
+
+  def prepare 
+    @CandyMachine.prepare
+  end
+
+  def make!
+    if @CandyMachine.ready?
+      @CandyMachine.make!
+    else
+      puts "sadness. Not ready yet."
+    end
+  end
+  
 end
+
+machine = MyCandyMachine.new
+machine.prepare
+machine.make!
